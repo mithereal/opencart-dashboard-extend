@@ -1,0 +1,105 @@
+<modification>
+    <id>Dashboard extend</id>
+    <version>1.0</version>
+   <vqmver>2.5.0</vqmver>
+    <author>Verysign Romania</author>
+
+	
+<file name="admin/controller/common/dashboard.php">
+    <operation error="skip">
+        <search position="after"><![CDATA[$data['token'] = $this->session->data['token'];]]></search>
+        <add><![CDATA[
+		$this->document->addStyle('view/stylesheet/dashboard_extend.css');
+        $data['settings_link'] = $this->url->link('setting/setting', 'token=' . $this->session->data['token'], 'SSL');
+		$data['articles_link'] = $this->url->link('catalog/information', 'token=' . $this->session->data['token'], 'SSL');
+		$data['contact_link'] = $this->url->link('marketing/contact', 'token=' . $this->session->data['token'], 'SSL');
+		$data['product_link'] = $this->url->link('catalog/product', 'token=' . $this->session->data['token'], 'SSL');
+		$data['backup_link'] = $this->url->link('tool/backup', 'token=' . $this->session->data['token'], 'SSL');
+		$data['shipping_link'] = $this->url->link('extension/shipping', 'token=' . $this->session->data['token'], 'SSL');
+        ]]></add>
+    </operation>
+    
+</file>	
+	
+	
+	
+<file name="admin/view/template/common/dashboard.tpl">
+
+    <!-- Remove this section if you don't want to watermark main product image at product page -->
+    <operation error="skip">
+        <search position="before"><![CDATA[<?php if ($error_install) { ?>]]></search>
+        <add><![CDATA[ <div class="row">
+      <div class="col-lg-1 col-md-1 col-sm-3">
+		<div class="tile">
+			<div class="tile-heading">settings</div>
+			<div class="tile-body"><a href="<?php echo $settings_link; ?>"><i class="fa fa-cog fa-fw"></i></a></div>
+		</div>
+	  </div>
+	  <div class="col-lg-1 col-md-1 col-sm-3">
+		<div class="tile">
+			<div class="tile-heading">Article</div>
+			<div class="tile-body"><a href="<?php echo $articles_link; ?>"><i class="fa fa-pencil fa-fw"></i></a></div>
+		</div>
+	  </div>
+	  <div class="col-lg-1 col-md-1 col-sm-3">
+		<div class="tile">
+			<div class="tile-heading">Send Mail</div>
+			<div class="tile-body"><a href="<?php echo $contact_link; ?>"><i class="fa fa-envelope  fa-fw"></i></a></div>
+		</div>
+	  </div>
+	  <div class="col-lg-1 col-md-1 col-sm-3">
+		<div class="tile">
+			<div class="tile-heading">Products</div>
+			<div class="tile-body"><a href="<?php echo $product_link; ?>"><i class="fa fa-database  fa-fw"></i></a></div>
+		</div>
+	  </div>
+	  <div class="col-lg-1 col-md-1 col-sm-3">
+		<div class="tile">
+			<div class="tile-heading">Backup</div>
+			<div class="tile-body"><a href="<?php echo $backup_link; ?>"><i class="fa fa-refresh fa-fw"></i></a></div>
+		</div>
+	  </div>	  
+  	  <div class="col-lg-1 col-md-1 col-sm-3">
+		<div class="tile">
+			<div class="tile-heading">Shipping</div>
+			<div class="tile-body"><a href="<?php echo $shipping_link; ?>"><i class="fa fa-truck fa-fw"></i></a></div>
+		</div>
+	  </div>    
+	  
+	  
+	  <?php 
+ $numberOfProcessors=`cat /proc/cpuinfo | grep processor | wc -l`;
+ $numberOfProcessors=preg_replace('/\s+/', '',$numberOfProcessors);
+ $numberOfProcessors=str_replace(":","", $numberOfProcessors);
+ $numberOfProcessors=str_replace("processor","", $numberOfProcessors);
+ $numberOfProcessors++;
+$Processors = ($numberOfProcessors * 2);
+
+$cpu = strtok(file_get_contents('/proc/loadavg'), ' ') * 100 / $Processors;
+?>
+	  <div class="col-lg-2 col-md-2 col-sm-3">
+		<div class="tile">
+			<div class="tile-heading">Load Average Across <?php echo $numberOfProcessors -1 ; ?> CPUs</div>
+			<div class="tile-body"><i class="fa dash-cpu fa-fw"></i> 
+<?php
+  echo round($cpu, 2);
+ ?>
+	<small>%</small>		
+			</div>
+		</div>
+	  </div>    
+	  
+	  
+    </div>
+	 ]]></add>
+    </operation>
+    <!-- End of remove this section -->
+
+    
+</file>
+
+
+
+  
+
+</modification>
